@@ -1,32 +1,57 @@
 <template>
   <div id="app">
     <div class="main-area" :style="{backgroundImage: colorVal}">
-      <angress :option="{size: 250, activeColor: '#FFEB3B'}" v-model="colordata.deg"></angress>
+      <angress :option="anoption" v-model="colordata.deg"></angress>
+      <div class="color-wraper">
+        <color-slider :stops="colordata.stops"></color-slider>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import angress from './components/angress.vue'
+  import ColorSlider from './components/color-slider.vue'
   export default {
     data () {
       return {
         colordata: {
-          deg: 180,
+          deg: 120,
           stops: [
-            ['#79F1A4', '10%'],
-            ['#0E5CAD', '100%']
+            {
+              color: '#79F1A4',
+              per: 10
+            },
+            {
+              color: '#0E5CAD',
+              per: 50
+            }
           ]
+        },
+        anoption: {
+          size: 230,
+          activeColor: '#FFEB3B',
+          fontSize: '30px',
+          lineLenth: 45,
+          fontFormat: function (val) {
+            return `${val}°`
+          }
         }
       }
     },
     components: {
-      angress
+      angress,
+      ColorSlider
+    },
+    methods: {
+      insertStop: function (item) {
+        this.colordata.stops.push(item)
+      }
     },
     computed: {
       colorVal: function () {
         let stops = this.colordata.stops.map(item => {
-          return `${item[0]} ${item[1]}`
+          return `${item.color} ${item.per}%`
         }).join(', ')
         return `linear-gradient(${this.colordata.deg}deg, ${stops})`
       }
@@ -50,6 +75,7 @@
 
   * {
     font-family: Menlo, Monaco, Consolas, "Helvetica Neue", Helvetica, "Courier New", 微软雅黑, monospace, Arial, sans-serif, 黑体;
+    // transition: all,.5s;
   }
 
   .slide-enter-active,  .slide-leave-active {
@@ -138,7 +164,15 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+  }
+  
+  .main-area canvas {
+    opacity: 0.1;
+  }
+
+  .main-area canvas:hover {
+    opacity: 1;
   }
 
   .load-outer {
@@ -251,5 +285,11 @@
     width: 250px;
     height: 250px;
     margin: 100px auto;
+  }
+
+  .color-wraper {
+    width: 700px;
+    position: absolute;
+    bottom: 50px;
   }
 </style>
