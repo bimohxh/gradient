@@ -24,7 +24,7 @@
             },
             {
               color: '#0E5CAD',
-              per: 50
+              per: 100
             }
           ]
         },
@@ -167,11 +167,16 @@
     justify-content: center;
   }
   
-  .main-area canvas {
+  .main-area canvas, .main-area .color-wraper {
     opacity: 0.1;
+    transition: all .5s
   }
 
   .main-area canvas:hover {
+    opacity: 1;
+  }
+
+  .main-area .color-wraper:hover {
     opacity: 1;
   }
 
@@ -288,8 +293,12 @@
   }
 
   .color-wraper {
-    width: 700px;
+    width: 900px;
     position: absolute;
-    bottom: 50px;
+    bottom: 0px;
+    padding: 0 100px;
+    padding-top: 100px;
+    height: 200px;
+    box-sizing: border-box;
   }
 </style>
