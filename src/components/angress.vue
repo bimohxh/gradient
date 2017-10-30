@@ -7,7 +7,7 @@
 <script>
   var canvi, ctx
   export default {
-    props: ['value', 'option', 'id'],
+    props: ['value', 'option', 'id', 'valtime'],
     data () {
       return {
         flag: 'anglecan',
@@ -80,6 +80,11 @@
           deg = Math.PI * 2 - Math.atan(_w / _h)
         }
         this.draw(parseInt(deg * 180 / Math.PI))
+      }
+    },
+    watch: {
+      'valtime': function () {
+        this.draw(this.value)
       }
     },
     created () {

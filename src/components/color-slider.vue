@@ -180,8 +180,9 @@
   }
   .color-pop {
     position: absolute;
-    top: -255px;
-    left: -10px;
+    top: 40px;
+    left: -90px;
+    z-index: 10;
   }
 
   .color-trash {

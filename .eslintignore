@@ -1,3 +1,4 @@
 build/*.js
 config/*.js
 src/components/loaditem.vue
+src/components/demo-slider.vue

@@ -1,10 +1,16 @@
 <template>
   <div id="app">
+    <div class="code-box">
+      <code>background-image: {{colorVal}}</code>
+    </div>
     <div class="main-area" :style="{backgroundImage: colorVal}">
-      <angress :option="anoption" v-model="colordata.deg"></angress>
+      <angress :option="anoption" v-model="colordata.deg" :valtime="angressTime"></angress>
       <div class="color-wraper">
         <color-slider :stops="colordata.stops"></color-slider>
       </div>
+    </div>
+    <div class="slider-box">
+      <demo-slider :applyval="applyDemo"></demo-slider>
     </div>
   </div>
 </template>
@@ -12,22 +18,28 @@
 <script>
   import angress from './components/angress.vue'
   import ColorSlider from './components/color-slider.vue'
+  import DemoSlider from './components/demo-slider.vue'
   export default {
     data () {
       return {
         colordata: {
-          deg: 120,
+          deg: 36,
           stops: [
             {
-              color: '#79F1A4',
-              per: 10
+              color: '#17522E',
+              per: 0
             },
             {
-              color: '#0E5CAD',
+              color: '#2893A2',
+              per: 60
+            },
+            {
+              color: '#DE6B5B',
               per: 100
             }
           ]
         },
+        angressTime: Date.now(),
         anoption: {
           size: 230,
           activeColor: '#FFEB3B',
@@ -41,11 +53,16 @@
     },
     components: {
       angress,
-      ColorSlider
+      ColorSlider,
+      DemoSlider
     },
     methods: {
       insertStop: function (item) {
         this.colordata.stops.push(item)
+      },
+      applyDemo: function (color) {
+        this.colordata = color
+        this.angressTime = Date.now()
       }
     },
     computed: {
@@ -167,8 +184,8 @@
     justify-content: center;
   }
   
-  .main-area canvas, .main-area .color-wraper {
-    opacity: 0.1;
+  .main-area canvas, .main-area .color-wraper, .slider-box {
+    opacity: .6;
     transition: all .5s
   }
 
@@ -177,6 +194,10 @@
   }
 
   .main-area .color-wraper:hover {
+    opacity: 1;
+  }
+
+  .slider-box:hover {
     opacity: 1;
   }
 
@@ -295,10 +316,37 @@
   .color-wraper {
     width: 900px;
     position: absolute;
-    bottom: 0px;
+    top: 10px;
     padding: 0 100px;
     padding-top: 100px;
     height: 200px;
     box-sizing: border-box;
+  }
+
+  .slider-box {
+    width: 150px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 30px;
+  }
+
+  .code-box {
+    position: absolute;
+    bottom: 50px;
+    left: 10px;
+    right: 10px;
+    text-align: center;
+    color: #FFF;
+    font-size: 15px;
+  }
+
+  .code-box code {
+    background-color: rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    padding: 20px;
+    border-radius: 5px;
+    letter-spacing: 0.2px;
+    border-left: 3px solid #fff;
   }
 </style>
