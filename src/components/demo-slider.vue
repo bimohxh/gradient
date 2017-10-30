@@ -3,7 +3,7 @@
     <!-- Swiper -->
     <div class="swiper-container" :style="{height: slideHeight + 'px', marginTop: top + 'px'}">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="color in colors" :style="{backgroundImage: colorVal(color)}" @click="applyval(color)"></div>
+        <div class="swiper-slide" :data-index="index" v-for="(color, index) in colors" :style="{backgroundImage: colorVal(color)}"></div>
       </div>
     </div>
     <!-- Add Pagination -->
@@ -13,7 +13,7 @@
 
 <script>
   require('swiper/dist/css/swiper.css')
-  import Swiper from 'swiper'
+  import Swiper from '../../static/swiper/swiper'
   const deg = 135
   export default {
     props: ['applyval'],
@@ -471,8 +471,9 @@
       let _top = parseInt(screenHeight * 0.1)
       this.top = _top
       this.slideHeight = screenHeight - _top * 2
+      let _self = this
       setTimeout(function () {
-        new Swiper('.swiper-container', {
+        let mySwiper = new Swiper('.swiper-container', {
           direction: 'vertical',
           slidesPerView: 6,
           spaceBetween: 10,
@@ -483,6 +484,13 @@
             clickable: true
           },
           mousewheel: true
+        })
+        mySwiper.on('tap', function (event) {
+          let _index = event.target.getAttribute('data-index')
+          console.log(_index)
+          if (_index >= 0 && _index < _self.colors.length) {
+            _self.applyval(_self.colors[_index])
+          }
         })
       }, 0)
     }
@@ -502,7 +510,7 @@
     display: flex;
     flex-direction: column;
     top: 0;
-    left: 0;
+    right: 0;
     align-items: center;
     justify-content: center;
     bottom: 0;

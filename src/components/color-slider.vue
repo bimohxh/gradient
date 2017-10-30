@@ -170,6 +170,17 @@
     text-align: center;
     left: -7px;
   }
+  .color-per:before{
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid #FFF;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+  }
   .color-txt {
     position: absolute;
     top: 40px;

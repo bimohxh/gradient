@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <div class="code-box">
-      <code>background-image: {{colorVal}}</code>
+    <div class="slider-box">
+      <demo-slider :applyval="applyDemo"></demo-slider>
     </div>
     <div class="main-area" :style="{backgroundImage: colorVal}">
-      <angress :option="anoption" v-model="colordata.deg" :valtime="angressTime"></angress>
       <div class="color-wraper">
         <color-slider :stops="colordata.stops"></color-slider>
       </div>
-    </div>
-    <div class="slider-box">
-      <demo-slider :applyval="applyDemo"></demo-slider>
+      <angress :option="anoption" v-model="colordata.deg" :valtime="angressTime"></angress>
+      <button @click="randomColor" class="random-btn" title="随机渐变色">
+        <icon name="random"></icon>
+      </button>
+      <div class="code-box">
+        <code>background-image: {{colorVal}}</code>
+      </div>
+      <div class="footer">
+        Powered by <a href="https://www.awesomes.cn/" target="_blank">Awesomes.cn</a> Open on <a href="https://github.com/awesomes-cn/gradient" target="_blank">GitHub</a>
+      </div>
     </div>
   </div>
 </template>
@@ -34,14 +40,14 @@
               per: 60
             },
             {
-              color: '#DE6B5B',
+              color: '#FFCB16',
               per: 100
             }
           ]
         },
         angressTime: Date.now(),
         anoption: {
-          size: 230,
+          size: 220,
           activeColor: '#FFEB3B',
           fontSize: '30px',
           lineLenth: 45,
@@ -61,8 +67,32 @@
         this.colordata.stops.push(item)
       },
       applyDemo: function (color) {
+        if (!color) { return }
         this.colordata = color
         this.angressTime = Date.now()
+      },
+      randomColor: function () {
+        let color1 = this.getRandomColor()
+        let color2 = this.getRandomColor()
+        let _deg = parseInt(Math.random() * 360)
+        this.colordata = {
+          deg: _deg,
+          stops: [
+            {
+              color: color1,
+              per: 0
+            },
+            {
+              color: color2,
+              per: 100
+            }
+          ]
+        }
+        this.angressTime = Date.now()
+      },
+      // 随机颜色
+      getRandomColor: function () {
+        return '#' + ('00000' + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6)
       }
     },
     computed: {
@@ -181,10 +211,10 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    flex-direction: column
   }
   
-  .main-area canvas, .main-area .color-wraper, .slider-box {
+  .main-area canvas, .main-area .color-wraper, .slider-box, .random-btn {
     opacity: .6;
     transition: all .5s
   }
@@ -198,6 +228,10 @@
   }
 
   .slider-box:hover {
+    opacity: 1;
+  }
+
+  .random-btn:hover {
     opacity: 1;
   }
 
@@ -301,10 +335,17 @@
     color: #FFF;
   }
 
-  footer {
+  .footer {
     text-align: center;
-    padding: 50px;
-    color: #999
+    line-height: 50px;
+    color: #DDD;
+    text-align: center;
+  }
+
+  .footer a {
+    color: #DDD;
+    font-weight: bold;
+    text-decoration: underline
   }
 
   .ang-box {
@@ -315,8 +356,6 @@
 
   .color-wraper {
     width: 900px;
-    position: absolute;
-    top: 10px;
     padding: 0 100px;
     padding-top: 100px;
     height: 200px;
@@ -326,19 +365,17 @@
   .slider-box {
     width: 150px;
     position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 30px;
+    right: 20px;
+    z-index: 50;
   }
 
   .code-box {
-    position: absolute;
-    bottom: 50px;
-    left: 10px;
-    right: 10px;
     text-align: center;
     color: #FFF;
     font-size: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   .code-box code {
@@ -348,5 +385,24 @@
     border-radius: 5px;
     letter-spacing: 0.2px;
     border-left: 3px solid #fff;
+  }
+
+  .random-btn {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.71);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #E91E63;
+    margin: 20px 0;
+    border: none;
+    outline: none;
+  }
+
+  .footer {
+    height: 50px;
   }
 </style>
